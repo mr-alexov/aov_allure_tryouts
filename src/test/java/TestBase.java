@@ -1,7 +1,7 @@
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +12,8 @@ public class TestBase {
 
     private static final Logger logger = LoggerFactory.getLogger(TestBase.class);
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
         SelenideLogger.addListener("allure", new AllureSelenide());
 
         // Configuration.holdBrowserOpen = true;
