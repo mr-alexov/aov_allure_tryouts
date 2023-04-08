@@ -1,6 +1,8 @@
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
@@ -12,6 +14,8 @@ public class TestBase {
 
     private static final Logger logger = LoggerFactory.getLogger(TestBase.class);
 
+    private static String executionMode;
+
     @BeforeAll
     static void setUp() {
         SelenideLogger.addListener("allure", new AllureSelenide());
@@ -19,7 +23,7 @@ public class TestBase {
         // Configuration.holdBrowserOpen = true;
         Configuration.pageLoadStrategy = "eager";
         Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
-        String executionMode = System.getProperty("executionMode", "local");
+        executionMode = System.getProperty("executionMode", "local");
         logger.info("Execution mode: " + executionMode);
 
         if (executionMode.equals("remote")) {
@@ -39,6 +43,16 @@ public class TestBase {
             Configuration.browserCapabilities = capabilities;
         }
 
+    }
+
+    @AfterEach
+    void addAttachments() {
+        Attach.screenshotAs("Last screen");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        if (executionMode.equals("remote")) {
+            Attach.addVideo();
+        }
     }
 
 }
