@@ -26,7 +26,11 @@ public class TestBase {
         executionMode = System.getProperty("executionMode", "local");
         logger.info("Execution mode: " + executionMode);
 
-        if (executionMode.equals("remote") || !(System.getProperty("os.name").startsWith("Windows"))) {
+        if (!System.getProperty("os.name").startsWith("Windows")) {
+            executionMode = "remote";
+        }
+
+        if (executionMode.equals("remote")) {
             Configuration.browser = System.getProperty("browser", "chrome");
             logger.info("Browser" + Configuration.browser);
 
